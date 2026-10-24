@@ -1,0 +1,42 @@
+mode = "dark"
+
+# Enter the Matrix -- purple phosphor variant.
+# Same lifted film shadows as the soft-dark original, with the green cast
+# turned violet: lavender text, purple accent, plum borders. Red stays reserved.
+background         = "#141218"
+darker_background  = "#0C0A0F"
+dark_background    = "#100E13"
+lighter_background = "#1D1A22"
+
+foreground         = "#B9A6CC"
+light_foreground   = "#C4B2D6"
+bright_foreground  = "#D2C2E2"
+dark_foreground    = "#9A88AE"
+muted              = "#40354C"
+
+accent               = "#A77BDB"
+selection            = "#2A2035"
+selection_background = "#A77BDB"
+selection_foreground = "#110E15"
+
+hyprland_active_border   = "rgba(8A5CC0ff)"
+hyprland_inactive_border = "rgba(40354Ccc)"
+active_border_color      = "#8A5CC0"
+active_tab_background    = "#7F55B3"
+
+# ANSI: hues kept (so diffs and errors still read) but leaned toward violet.
+red     = "#E5484D"
+yellow  = "#C8B87A"
+orange  = "#C99A7A"
+green   = "#8FBF9A"
+cyan    = "#8FB8C8"
+blue    = "#8A9BE0"
+magenta = "#B88AE0"
+brown   = "#A88A70"
+
+bright_red     = "#E0605F"
+bright_yellow  = "#D6C890"
+bright_green   = "#A4CEAE"
+bright_cyan    = "#A4C8D6"
+bright_blue    = "#A0AEEA"
+bright_magenta = "#CBA2EE"

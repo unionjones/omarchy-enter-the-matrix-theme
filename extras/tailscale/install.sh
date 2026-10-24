@@ -1,6 +1,7 @@
 #!/bin/bash
-# Optional: switch between the green and white Matrix themes by Tailscale state.
-# Connected -> enter-the-matrix, disconnected -> enter-the-matrix-white.
+# Optional: switch between the Matrix themes by Tailscale state.
+# Mullvad exit node -> enter-the-matrix-purple, connected -> enter-the-matrix,
+# disconnected -> enter-the-matrix-white.
 #
 #   extras/tailscale/install.sh             install and start the user service
 #   extras/tailscale/install.sh --remove    stop it and take it back
@@ -28,4 +29,4 @@ install -m 644 "$HERE/matrix-tailscale-theme.service" "$UNIT"
 systemctl --user daemon-reload
 systemctl --user enable matrix-tailscale-theme.service >/dev/null
 systemctl --user restart matrix-tailscale-theme.service
-echo "the theme now follows Tailscale: green when connected, white when not"
+echo "the theme now follows Tailscale: purple through a Mullvad exit node, green when connected, white when not"

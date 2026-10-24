@@ -30,12 +30,14 @@ Item {
   // Straight from `ttfx matrix`: --highlight-color and --rain-color-gradient.
   // Tuned toward CRT phosphor bloom (film-accurate A). The white variant
   // (provider.json, variants/) takes the green out: white heads, silver trail.
+  // The purple variant turns it violet: lavender heads, purple trail.
   property string themeName: ""
   readonly property bool white: themeName === "enter-the-matrix-white"
+  readonly property bool purple: themeName === "enter-the-matrix-purple"
   property color bgColor: "#000000"
-  property color headColor: white ? "#FFFFFF" : "#E2FFE2"
-  property color rainA: white ? "#C8CCC9" : "#7EBB7E"
-  property color rainB: white ? "#2E3130" : "#0E3A12"
+  property color headColor: white ? "#FFFFFF" : purple ? "#F0E2FF" : "#E2FFE2"
+  property color rainA: white ? "#C8CCC9" : purple ? "#A77BDB" : "#7EBB7E"
+  property color rainB: white ? "#2E3130" : purple ? "#2A0E3A" : "#0E3A12"
 
   // Omarchy rewrites theme.name in place on every theme set, so a watch on
   // the file itself is enough.

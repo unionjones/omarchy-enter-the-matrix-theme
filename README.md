@@ -130,23 +130,26 @@ leave you with no lock enabled at all.
 The boot splash is the exception and does not stand down: the Plymouth splash
 belongs to the system, not to the theme.
 
-## The white variant, and switching by Tailscale
+## The white and purple variants, and switching by Tailscale
 
 The pack also installs **Enter the Matrix White**: the same shadows with the
-green taken out, silver text, and white rain. Pick it like any theme; the rain,
-the screensaver and the boot splash stay up under either one.
+green taken out, silver text, and white rain; and **Enter the Matrix Purple**:
+the green turned violet, lavender text, and purple rain. Pick either like any
+theme; the rain, the screensaver and the boot splash stay up under all three.
 
-To switch between them automatically, green while Tailscale is connected and
-white while it is not:
+To switch between them automatically, purple while Tailscale routes through a
+Mullvad exit node, green while it is otherwise connected, and white while it
+is not:
 
 ```bash
 ~/.config/omarchy/themes/enter-the-matrix/extras/tailscale/install.sh
 ```
 
 A user service checks Tailscale every five seconds and changes the theme only
-when the connection changes, and only while one of the two Matrix themes is
-current, so a theme you pick by hand is left alone. Take it back with
-`extras/tailscale/install.sh --remove`.
+when that state changes, and only while one of the three Matrix themes is
+current, so a theme you pick by hand is left alone. A Mullvad exit node is one
+tagged `tag:mullvad-exit-node` (or named under `mullvad.ts.net`). Take it back
+with `extras/tailscale/install.sh --remove`.
 
 ## Remove
 

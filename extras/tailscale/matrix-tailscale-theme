@@ -1,25 +1,44 @@
 #!/bin/bash
 # Switch between the Matrix themes by Tailscale state:
-# connected -> enter-the-matrix (green), disconnected -> enter-the-matrix-white.
-# Only acts while one of those two themes is current, so picking any other
-# theme by hand is left alone.
+#   exit node is a Mullvad server -> enter-the-matrix-purple
+#   connected                     -> enter-the-matrix (green)
+#   disconnected                  -> enter-the-matrix-white
+# Only acts while one of those themes is current, so picking any other theme
+# by hand is left alone.
 set -u
 
+MULLVAD_THEME="enter-the-matrix-purple"
 ON_THEME="enter-the-matrix"
 OFF_THEME="enter-the-matrix-white"
 INTERVAL="${MATRIX_TAILSCALE_INTERVAL:-5}"
 THEME_NAME_PATH="$HOME/.local/state/omarchy/current/theme.name"
 
-tailscale_up() {
-  [[ $(tailscale status --json --peers=false 2>/dev/null | jq -r '.BackendState // empty') == "Running" ]]
+# Prints mullvad, up or down. Mullvad exit nodes carry tag:mullvad-exit-node
+# and live under mullvad.ts.net.
+tailscale_state() {
+  tailscale status --json 2>/dev/null | jq -r '
+    if .BackendState != "Running" then "down"
+    elif any(.Peer[]?; .ExitNode == true and
+             ((.Tags // [] | index("tag:mullvad-exit-node")) or
+              ((.DNSName // "") | endswith(".mullvad.ts.net."))))
+      then "mullvad"
+    else "up" end' || echo down
+}
+
+is_matrix() {
+  [[ $1 == "$MULLVAD_THEME" || $1 == "$ON_THEME" || $1 == "$OFF_THEME" ]]
 }
 
 last=""
 while true; do
-  if tailscale_up; then want="$ON_THEME"; else want="$OFF_THEME"; fi
+  case $(tailscale_state) in
+    mullvad) want="$MULLVAD_THEME" ;;
+    up) want="$ON_THEME" ;;
+    *) want="$OFF_THEME" ;;
+  esac
   current=$(cat "$THEME_NAME_PATH" 2>/dev/null)
 
-  if [[ $want != "$last" && ( $current == "$ON_THEME" || $current == "$OFF_THEME" ) && $current != "$want" ]]; then
+  if [[ $want != "$last" ]] && is_matrix "$current" && [[ $current != "$want" ]]; then
     omarchy theme set "$want"
   fi
   last="$want"

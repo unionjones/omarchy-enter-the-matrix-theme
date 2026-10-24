@@ -1,5 +1,5 @@
 [Unit]
-Description=Switch Matrix theme green/white with Tailscale connection
+Description=Switch Matrix theme purple/green/white with Tailscale and Mullvad
 After=graphical-session.target
 PartOf=graphical-session.target
 
