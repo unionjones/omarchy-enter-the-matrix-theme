@@ -79,18 +79,35 @@ def end_of_block(text, start):
     die("unbalanced braces in LockView.qml")
 
 
+def enclosing_block(text, pos):
+    """Index of the start of the line that opens the block holding `pos`."""
+    depth = 0
+    i = pos
+    while i > 0:
+        i -= 1
+        if text[i] == "}":
+            depth += 1
+        elif text[i] == "{":
+            if depth == 0:
+                return text.rfind("\n", 0, i) + 1
+            depth -= 1
+    die("unbalanced braces in LockView.qml")
+
+
 def patch(text):
-    images = [m for m in re.finditer(r"^[ \t]*Image\s*\{", text, re.M)
-              if "id: wallpaper" in text[m.start():end_of_block(text, m.start())]]
+    # The element is found by its id, not its type: Omarchy has drawn the
+    # wallpaper with an Image and, since 4.0, with its own BackgroundMedia.
+    images = [enclosing_block(text, m.start())
+              for m in re.finditer(r"^[ \t]*id:\s*wallpaper\s*$", text, re.M)]
     if len(images) != 1:
         die(
-            f"expected exactly one `Image {{ id: wallpaper }}` in LockView.qml, found "
+            f"expected exactly one element with `id: wallpaper` in LockView.qml, found "
             f"{len(images)}. Omarchy's lock has changed: leaving it alone.\n"
             f"  Please open an issue at {PROVIDER['repoUrl']} "
             f"with your `omarchy version`."
         )
 
-    start = images[0].start()
+    start = images[0]
     end = end_of_block(text, start)
 
     # The MultiEffect that blurs that image sits right behind it and goes too.
