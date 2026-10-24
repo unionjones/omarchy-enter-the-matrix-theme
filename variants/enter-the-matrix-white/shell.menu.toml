@@ -1,0 +1,14 @@
+[menu]
+# Soft-dark variant: the card lifts off the wallpaper one rung, as always.
+background                = "#1B1D1E"
+background-alpha          = 1.0
+text                      = "#C8CCC9"
+border                    = "hyprland.active-border-foreground"
+border-alpha              = 1.0
+scrim                     = "#0A0B0B"
+scrim-alpha               = 0.5
+selected-background       = "#E8ECE9"
+selected-background-alpha = 0.12
+selected-text             = "#E8ECE9"
+selected-border           = "hyprland.active-border-foreground"
+selected-border-alpha     = 0.35

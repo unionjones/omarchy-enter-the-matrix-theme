@@ -15,6 +15,12 @@
   ],
 
   "slug": "enter-the-matrix",
+  "//variants": [
+    "Other themes the pack also serves, each a folder under variants/. install.sh",
+    "links them into ~/.config/omarchy/themes/, and the pack stays up under any",
+    "of them. MatrixRain.qml picks its colours by the current theme's name."
+  ],
+  "variants": ["enter-the-matrix-white"],
   "displayName": "Enter the Matrix",
   "cli": "omarchy-matrix",
   "//ipc": "The IpcHandler target the service registers; `omarchy-shell <ipc> ...`.",

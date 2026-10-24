@@ -1,0 +1,42 @@
+mode = "dark"
+
+# Enter the Matrix -- white phosphor variant.
+# Same lifted film shadows as the soft-dark original, with the green cast
+# taken out: silver text, white accent, grey borders. Red stays reserved.
+background         = "#121314"
+darker_background  = "#0A0B0B"
+dark_background    = "#0E0F10"
+lighter_background = "#1B1D1E"
+
+foreground         = "#C8CCC9"
+light_foreground   = "#D4D8D5"
+bright_foreground  = "#E8ECE9"
+dark_foreground    = "#A3A8A5"
+muted              = "#3E4241"
+
+accent               = "#E8ECE9"
+selection            = "#2A2D2C"
+selection_background = "#C8CCC9"
+selection_foreground = "#0E0F10"
+
+hyprland_active_border   = "rgba(C8CCC9ff)"
+hyprland_inactive_border = "rgba(3E4241cc)"
+active_border_color      = "#C8CCC9"
+active_tab_background    = "#8C918E"
+
+# ANSI: hues kept (so diffs and errors still read) but bleached toward silver.
+red     = "#E5484D"
+yellow  = "#C9C6A8"
+orange  = "#C9B8A0"
+green   = "#A9C2AE"
+cyan    = "#A8C4C2"
+blue    = "#9AAAB8"
+magenta = "#B8A8BC"
+brown   = "#A89880"
+
+bright_red     = "#E0605F"
+bright_yellow  = "#D8D5BA"
+bright_green   = "#BDD2C1"
+bright_cyan    = "#BCD4D2"
+bright_blue    = "#AEBCC8"
+bright_magenta = "#C8BACC"

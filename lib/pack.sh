@@ -18,9 +18,41 @@ pack_load_provider() {
   fi
   eval "$(jq -r '@sh "SLUG=\(.slug) DISPLAY_NAME=\(.displayName) CLI=\(.cli) ACCENT=\(.accent) PLUGIN_ID=\(.plugin.id) PLUGIN_SRC=\(.plugin.dir) PLYMOUTH_THEME=\(.plymouth.theme) IPC=\(.ipc) RAIN_QML=\(.rainFiles[0]) LIVE_BACKGROUND=\(.liveBackground // "")"' "$1")" ||
     { echo "pack: $1 is not valid JSON" >&2; return 1; }
+  mapfile -t VARIANTS < <(jq -r '.variants // [] | .[]' "$1")
   # Up to 1.2.x a bar widget of the pack had this id. retire_widget takes an
   # installed one back.
   LEGACY_WIDGET_ID="$PLUGIN_ID.widget"
+}
+
+# The pack's own themes: the slug and its variants (provider.json).
+is_pack_theme() { # <theme name>
+  local name
+  for name in "$SLUG" "${VARIANTS[@]}"; do
+    [[ ${1:-} != "$name" ]] || return 0
+  done
+  return 1
+}
+
+# Links each variant into Omarchy's themes folder. A real folder of the user's
+# own under the same name stays.
+offer_variants() { # <theme dir>
+  local name link
+  for name in "${VARIANTS[@]}"; do
+    link="$HOME/.config/omarchy/themes/$name"
+    [[ -d $1/variants/$name ]] || continue
+    [[ ! -e $link || -L $link ]] || continue
+    ln -sfn "$1/variants/$name" "$link"
+  done
+}
+
+# Takes back the variant links and nothing else. Never fails.
+withdraw_variants() {
+  local name link
+  for name in "${VARIANTS[@]}"; do
+    link="$HOME/.config/omarchy/themes/$name"
+    [[ ! -L $link ]] || rm -f "$link"
+  done
+  return 0
 }
 
 # Every path the machinery writes, derived from $HOME and the provider's names.

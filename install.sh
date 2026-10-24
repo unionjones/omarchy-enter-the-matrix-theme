@@ -219,6 +219,7 @@ fi
 live_theme=$(omarchy-theme-dir "$SLUG" 2>/dev/null) || live_theme=""
 [[ -n $live_theme && -f $live_theme/$LIVE_BACKGROUND ]] || live_theme="$HERE"
 offer_live_background "$live_theme"
+offer_variants "$live_theme"
 
 # --- the CLI ----------------------------------------------------------------
 # The share dir mirrors the repo: bin/ holds the one command, lib/ its python,
@@ -297,7 +298,7 @@ problems=0
 OMARCHY_MATRIX_RESTART=$replaced_live "$BIN_DIR/$CLI" doctor >/dev/null || problems=1
 
 in_effect=0
-[[ $(cat "$HOME/.local/state/omarchy/current/theme.name" 2>/dev/null) != "$SLUG" ]] || in_effect=1
+! is_pack_theme "$(cat "$HOME/.local/state/omarchy/current/theme.name" 2>/dev/null)" || in_effect=1
 
 # The red pill starts on the rain. After that the background is Omarchy's: a
 # theme set starts on the rain by itself, and Style > Background changes it.

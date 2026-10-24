@@ -1,3 +1,5 @@
+import Quickshell
+import Quickshell.Io
 import QtQuick
 
 // Digital rain, on the GPU.
@@ -26,11 +28,24 @@ Item {
   property real cellHeight: 32
 
   // Straight from `ttfx matrix`: --highlight-color and --rain-color-gradient.
-  // Tuned toward CRT phosphor bloom (film-accurate A).
+  // Tuned toward CRT phosphor bloom (film-accurate A). The white variant
+  // (provider.json, variants/) takes the green out: white heads, silver trail.
+  property string themeName: ""
+  readonly property bool white: themeName === "enter-the-matrix-white"
   property color bgColor: "#000000"
-  property color headColor: "#E2FFE2"
-  property color rainA: "#7EBB7E"
-  property color rainB: "#0E3A12"
+  property color headColor: white ? "#FFFFFF" : "#E2FFE2"
+  property color rainA: white ? "#C8CCC9" : "#7EBB7E"
+  property color rainB: white ? "#2E3130" : "#0E3A12"
+
+  // Omarchy rewrites theme.name in place on every theme set, so a watch on
+  // the file itself is enough.
+  FileView {
+    path: Quickshell.env("HOME") + "/.local/state/omarchy/current/theme.name"
+    watchChanges: true
+    printErrors: false
+    onFileChanged: reload()
+    onLoaded: root.themeName = String(text() || "").trim()
+  }
 
   // Native pixels per logical pixel. The scanline is drawn against this rather
   // than against logical px, so it stays two real pixels wide on any panel.

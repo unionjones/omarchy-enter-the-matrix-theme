@@ -62,7 +62,7 @@ current_theme() {
 }
 
 pack_in_effect() {
-  [[ $(current_theme) == "$SLUG" ]]
+  is_pack_theme "$(current_theme)"
 }
 
 # Is our Plymouth theme the one in use? Not `omarchy plymouth current`: that one
@@ -461,7 +461,7 @@ apply_unlock_menu() {
 cmd_hook_theme_set() {
   if theme_removed; then
     cmd_hook_theme_remove
-  elif [[ ${1:-} == "$SLUG" ]]; then
+  elif is_pack_theme "${1:-}"; then
     cmd_doctor >/dev/null 2>&1 || true
   else
     cmd_suspend >/dev/null 2>&1 || true
@@ -594,6 +594,7 @@ cmd_doctor() {
   # whichever theme is current. Omarchy shows it only under this theme.
   theme=$(theme_dir) || theme=""
   [[ -z $theme ]] || offer_live_background "$theme"
+  [[ -z $theme ]] || offer_variants "$theme"
   # Style > Unlock belongs to the boot splash, which follows the system and not
   # the theme, so it is derived again whichever theme is current.
   apply_unlock_menu >/dev/null || failures=1
@@ -623,7 +624,7 @@ cmd_suspend() {
   # of on whichever stock theme happens to sort first.
   local leaving
   leaving=$(current_theme)
-  [[ -z $leaving || $leaving == "$SLUG" ]] || remember_previous_theme "$leaving"
+  [[ -z $leaving ]] || is_pack_theme "$leaving" || remember_previous_theme "$leaving"
   begin_changes
   pack_migrate
   stand_down

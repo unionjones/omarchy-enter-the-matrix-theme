@@ -254,7 +254,7 @@ step_off_target() {
     echo "  This theme is about to go. Pick the one to go back to." >&2
     reply=$(omarchy-theme-switcher 2>/dev/null) || reply=""
   fi
-  if [[ $reply != "$SLUG" ]] && theme_exists "$reply"; then
+  if ! is_pack_theme "$reply" && theme_exists "$reply"; then
     echo "$reply"
     return
   fi
@@ -262,7 +262,7 @@ step_off_target() {
   echo "$fallback"
 }
 
-if [[ $(cat "$HOME/.local/state/omarchy/current/theme.name" 2>/dev/null) == "$SLUG" ]]; then
+if is_pack_theme "$(cat "$HOME/.local/state/omarchy/current/theme.name" 2>/dev/null)"; then
   target=$(step_off_target)
   if [[ -n ${target:-} ]]; then
     echo "· stepping off the $SLUG theme onto $target"
@@ -271,6 +271,7 @@ if [[ $(cat "$HOME/.local/state/omarchy/current/theme.name" 2>/dev/null) == "$SL
 fi
 
 echo "· removing the theme"
+withdraw_variants
 rm -rf "$THEME_DIR"
 # Omarchy remembers a background per theme, and a hook of the user's may read it.
 rm -f "$HOME/.local/state/omarchy/backgrounds/$SLUG"
