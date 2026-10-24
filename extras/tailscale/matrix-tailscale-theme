@@ -1,0 +1,27 @@
+#!/bin/bash
+# Switch between the Matrix themes by Tailscale state:
+# connected -> enter-the-matrix (green), disconnected -> enter-the-matrix-white.
+# Only acts while one of those two themes is current, so picking any other
+# theme by hand is left alone.
+set -u
+
+ON_THEME="enter-the-matrix"
+OFF_THEME="enter-the-matrix-white"
+INTERVAL="${MATRIX_TAILSCALE_INTERVAL:-5}"
+THEME_NAME_PATH="$HOME/.local/state/omarchy/current/theme.name"
+
+tailscale_up() {
+  [[ $(tailscale status --json --peers=false 2>/dev/null | jq -r '.BackendState // empty') == "Running" ]]
+}
+
+last=""
+while true; do
+  if tailscale_up; then want="$ON_THEME"; else want="$OFF_THEME"; fi
+  current=$(cat "$THEME_NAME_PATH" 2>/dev/null)
+
+  if [[ $want != "$last" && ( $current == "$ON_THEME" || $current == "$OFF_THEME" ) && $current != "$want" ]]; then
+    omarchy theme set "$want"
+  fi
+  last="$want"
+  sleep "$INTERVAL"
+done

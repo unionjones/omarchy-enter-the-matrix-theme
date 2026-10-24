@@ -130,6 +130,24 @@ leave you with no lock enabled at all.
 The boot splash is the exception and does not stand down: the Plymouth splash
 belongs to the system, not to the theme.
 
+## The white variant, and switching by Tailscale
+
+The pack also installs **Enter the Matrix White**: the same shadows with the
+green taken out, silver text, and white rain. Pick it like any theme; the rain,
+the screensaver and the boot splash stay up under either one.
+
+To switch between them automatically, green while Tailscale is connected and
+white while it is not:
+
+```bash
+~/.config/omarchy/themes/enter-the-matrix/extras/tailscale/install.sh
+```
+
+A user service checks Tailscale every five seconds and changes the theme only
+when the connection changes, and only while one of the two Matrix themes is
+current, so a theme you pick by hand is left alone. Take it back with
+`extras/tailscale/install.sh --remove`.
+
 ## Remove
 
 `omarchy-matrix uninstall`, or `./uninstall.sh` from the theme directory. It
